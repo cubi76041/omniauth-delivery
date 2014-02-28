@@ -17,7 +17,7 @@ module OmniAuth
           :first_name => raw_info['firstName'], 
           :last_name  => raw_info['lastName'],
           :email => raw_info['email'],
-          :name => raw_info['name'],
+          :name => raw_info['firstName'].to_s + ' ' + raw_info['lastName'].to_s,
           :addresses => raw_info['addresses'],
           :phone => raw_info['phoneNumber']['number'],
         }
