@@ -36,8 +36,8 @@ module OmniAuth
       
       def raw_info
         access_token.options[:mode] = :query
-        access_token.options[:param_name] = :key
-        @raw_info ||= access_token.get('http://laundryqa.delivery.com/api/v1/customer/auth/guest').parsed
+        access_token.options[:param_name] = :token
+        @raw_info ||= access_token.get('http://laundryqa.delivery.com/api/v1/customer/auth').parsed
       end
       
       private
