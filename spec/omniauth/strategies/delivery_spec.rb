@@ -62,9 +62,9 @@ describe OmniAuth::Strategies::Foursquare do
     end
     
     context 'when data is present in raw info' do
-      # it 'returns the combined name' do
-        # subject.info[:name].should eq('test user')
-      # end
+      it 'returns the combined name' do
+        subject.info[:name].should eq('test user')
+      end
 
       it 'returns the first name' do
         subject.info[:first_name].should eq('test')
@@ -77,6 +77,28 @@ describe OmniAuth::Strategies::Foursquare do
       it 'returns the email' do
         subject.info[:email].should eq('testuser15@brinkmat.com')
       end
+      
+      it 'returns the addresses' do
+        subject.info[:addresses].should eq([{
+            "locationId" => 262437,
+            "street1" => "70 W 71st St",
+            "unit_number" => "ph",
+            "city" => "New York",
+            "state" => "NY",
+            "zipCode" => "10023",
+            "lat" => 40.776426,
+            "lng" => -73.979086,
+            "timezone" => "America\/New_York",
+            "neighborhood" => "Lincoln Square",
+            "default" => false,
+            "borough" => "MANHATTAN",
+            "doormanBuilding" => false
+          }])
+      end
+      
+      it 'returns the phone' do
+        subject.info[:email].should eq('3334445567')
+      end      
 
       it "sets the email blank if contact block is missing in raw_info" do
         @raw_info.delete('contact')
