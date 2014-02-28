@@ -17,7 +17,7 @@ describe OmniAuth::Strategies::Foursquare do
 
   describe '#client' do
     it 'has correct Foursquare site' do
-      subject.client.site.should eq('https://sandbox.delivery.com')
+      subject.client.site.should eq('http://sandbox.delivery.com')
     end
 
     it 'has correct authorize url' do

@@ -4,7 +4,7 @@ module OmniAuth
   module Strategies
     class Delivery < OmniAuth::Strategies::OAuth2
       option :client_options, {
-        :site => 'https://sandbox.delivery.com',
+        :site => 'http://sandbox.delivery.com',
         :authorize_url => '/third_party/authorize',
         :token_url => '/third_party/access_token'
       }
