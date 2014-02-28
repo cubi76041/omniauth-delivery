@@ -3,6 +3,7 @@ require 'omniauth-oauth2'
 module OmniAuth
   module Strategies
     class Delivery < OmniAuth::Strategies::OAuth2
+      DEFAULT_SCOPE = "global"
       option :client_options, {
         :site => 'http://sandbox.delivery.com',
         :authorize_url => '/third_party/authorize',
@@ -42,7 +43,7 @@ module OmniAuth
       private
       
       def client_params
-        {:client_id => options[:client_id], :redirect_uri => callback_url ,:response_type => "code"}
+        {:client_id => options[:client_id], :redirect_uri => callback_url ,:response_type => "code", :scope => params[:scope] || DEFAULT_SCOPE}
       end
     end
   end
