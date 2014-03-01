@@ -4,11 +4,19 @@ module OmniAuth
   module Strategies
     class Delivery < OmniAuth::Strategies::OAuth2
       DEFAULT_SCOPE = "global"
+      PRODUCTION_USER_SITE = 'https://laundryapi.delivery.com'
+      PRODUCTION_API_SITE = 'https://api.delivery.com' 
+      DEVELOPMENT_USER_SITE = 'http://laundryqa.delivery.com'
+      DEVELOPMENT_API_SITE = 'http://sandbox.delivery.com'
+      @@mode = :production
+      
       option :client_options, {
-        :site => 'http://sandbox.delivery.com',
+        :site => PRODUCTION_API_SITE,
         :authorize_url => '/third_party/authorize',
         :token_url => '/third_party/access_token'
       }
+      
+      option :authorize_options, [:development]
       
       uid { raw_info['usersid'] }
       
@@ -27,6 +35,9 @@ module OmniAuth
       end
 
       def request_phase
+        @@mode = :development if authorize_params.include?(:development)
+        options[:authorize_options].delete(:development)
+        options[:client_options][:site] = @@mode == :development ? DEVELOPMENT_API_SITE : PRODUCTION_API_SITE
         options[:authorize_params] = client_params.merge(options[:authorize_params])
         super
       end
@@ -39,7 +50,8 @@ module OmniAuth
       def raw_info
         access_token.options[:mode] = :query
         access_token.options[:param_name] = :token
-        @raw_info ||= access_token.post('http://laundryqa.delivery.com/api/v1/customer/auth').parsed
+        user_site = @@mode == :development ? DEVELOPMENT_USER_SITE : PROUCTION_USER_SITE
+        @raw_info ||= access_token.post(user_site + '/api/v1/customer/auth').parsed
       end
       
       private

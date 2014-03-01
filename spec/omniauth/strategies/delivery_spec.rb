@@ -1,14 +1,14 @@
 require 'spec_helper'
 require 'omniauth-delivery'
 
-describe OmniAuth::Strategies::Foursquare do
+describe OmniAuth::Strategies::Delivery do
   before :each do
     @request = double('Request')
     @request.stub(:params) { {} }
   end
   
   subject do
-    OmniAuth::Strategies::Foursquare.new(nil, @options || {}).tap do |strategy|
+    OmniAuth::Strategies::Delivery.new(nil, @options || {}).tap do |strategy|
       strategy.stub(:request) { @request }
     end
   end
@@ -16,8 +16,8 @@ describe OmniAuth::Strategies::Foursquare do
   it_should_behave_like 'an oauth2 strategy'
 
   describe '#client' do
-    it 'has correct Foursquare site' do
-      subject.client.site.should eq('http://sandbox.delivery.com')
+    it 'has correct Delivery site' do
+      subject.client.site.should eq('https://api.delivery.com')
     end
 
     it 'has correct authorize url' do
