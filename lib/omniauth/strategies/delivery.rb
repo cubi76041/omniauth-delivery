@@ -37,7 +37,7 @@ module OmniAuth
       def request_phase
         @@mode = :development if authorize_params.include?(:development)
         options[:authorize_options].delete(:development)
-        options[:client_options][:site] = @@mode == :development ? DEVELOPMENT_API_SITE : PRODUCTION_API_SITE
+        options.client_options.site = @@mode == :development ? DEVELOPMENT_API_SITE : PRODUCTION_API_SITE
         options[:authorize_params] = client_params.merge(options[:authorize_params])
         super
       end
@@ -47,10 +47,15 @@ module OmniAuth
           :grant_type => 'authorization_code'}))
       end
       
+      def callback_phase
+        options.client_options.site = @@mode == :development ? DEVELOPMENT_API_SITE : PRODUCTION_API_SITE
+        super
+      end
+      
       def raw_info
         access_token.options[:mode] = :query
         access_token.options[:param_name] = :token
-        user_site = @@mode == :development ? DEVELOPMENT_USER_SITE : PROUCTION_USER_SITE
+        user_site = @@mode == :development ? DEVELOPMENT_USER_SITE : PRODUCTION_USER_SITE
         @raw_info ||= access_token.post(user_site + '/api/v1/customer/auth').parsed
       end
       
